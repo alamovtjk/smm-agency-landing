@@ -3,6 +3,16 @@
 import { motion } from "framer-motion";
 import { ArrowRight, PlayCircle, TrendingUp, Users, Sparkles } from "lucide-react";
 import { useContactModal } from "./ModalProvider";
+import { Grain } from "./Grain";
+import { Sparks } from "./Sparks";
+
+const heroSparks = [
+  { top: "8%", left: "6%", size: 16, delay: 0 },
+  { top: "18%", left: "46%", size: 12, delay: 0.4, className: "text-lime-400/70" },
+  { top: "4%", left: "88%", size: 14, delay: 0.8, className: "text-magenta-400/70" },
+  { top: "32%", left: "2%", size: 10, delay: 1.2 },
+  { top: "60%", left: "94%", size: 12, delay: 0.6, className: "text-violet-400/70" },
+];
 
 export default function Hero() {
   const { openModal } = useContactModal();
@@ -13,10 +23,12 @@ export default function Hero() {
       className="relative overflow-hidden px-5 pb-20 pt-36 sm:px-6 sm:pt-44 lg:pb-32"
     >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-glow-lime opacity-40 blur-3xl" />
-        <div className="absolute right-0 top-20 h-[500px] w-[500px] rounded-full bg-glow-violet opacity-40 blur-3xl" />
-        <div className="absolute right-10 top-40 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,46,196,0.25),transparent_65%)] blur-2xl" />
+        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-glow-lime opacity-40 blur-3xl mix-blend-screen" />
+        <div className="absolute right-0 top-20 h-[500px] w-[500px] rounded-full bg-glow-violet opacity-40 blur-3xl mix-blend-screen" />
+        <div className="absolute right-10 top-40 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,46,196,0.3),transparent_65%)] blur-2xl mix-blend-screen" />
+        <Grain opacity={0.08} />
       </div>
+      <Sparks items={heroSparks} />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-8">
         <motion.div
