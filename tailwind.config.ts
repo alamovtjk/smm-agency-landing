@@ -19,6 +19,15 @@ const config: Config = {
         electric: {
           500: "#3cc8ff",
         },
+        magenta: {
+          400: "#ff5fd1",
+          500: "#ff2ec4",
+          600: "#e014a8",
+        },
+        cream: {
+          DEFAULT: "#f2e9d8",
+          dark: "#e5d9bf",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)"],
@@ -36,6 +45,8 @@ const config: Config = {
         neon: "0 0 20px rgba(184,255,60,0.5), 0 0 60px rgba(184,255,60,0.15)",
         "neon-violet":
           "0 0 20px rgba(139,92,246,0.45), 0 0 60px rgba(139,92,246,0.15)",
+        "neon-magenta":
+          "0 0 20px rgba(255,46,196,0.45), 0 0 60px rgba(255,46,196,0.15)",
       },
       animation: {
         float: "float 6s ease-in-out infinite",

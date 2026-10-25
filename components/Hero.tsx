@@ -15,6 +15,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-glow-lime opacity-40 blur-3xl" />
         <div className="absolute right-0 top-20 h-[500px] w-[500px] rounded-full bg-glow-violet opacity-40 blur-3xl" />
+        <div className="absolute right-10 top-40 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,46,196,0.25),transparent_65%)] blur-2xl" />
       </div>
 
       <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-8">
@@ -114,7 +115,12 @@ export default function Hero() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-56 w-56 rounded-full border border-lime-500/30 sm:h-64 sm:w-64" />
+            <div className="relative h-60 w-60 sm:h-72 sm:w-72">
+              <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_120deg,theme(colors.violet.500),theme(colors.magenta.500),theme(colors.lime.500),theme(colors.violet.500))] opacity-70 blur-xl" />
+              <div className="absolute inset-[18%] rounded-full bg-bg" />
+              <div className="absolute inset-[26%] rounded-full bg-[conic-gradient(from_280deg,theme(colors.magenta.400),theme(colors.violet.500),theme(colors.electric.500),theme(colors.magenta.400))] opacity-80 mix-blend-screen blur-sm" />
+            </div>
+            <div className="absolute h-56 w-56 rounded-full border border-lime-500/30 sm:h-64 sm:w-64" />
             <div className="absolute h-72 w-72 animate-pulse-slow rounded-full border border-violet-500/20 sm:h-80 sm:w-80" />
           </div>
         </motion.div>

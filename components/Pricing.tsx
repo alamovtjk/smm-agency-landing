@@ -1,15 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, ArrowRight } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  ArrowUpRight,
+  Grip,
+  PlayCircle,
+  TrendingUp,
+  Crown,
+  CreditCard,
+} from "lucide-react";
 import { useContactModal } from "./ModalProvider";
 
-const plans = [
+type Variant = "dark" | "lime" | "cream";
+
+const plans: {
+  number: string;
+  name: string;
+  price: string;
+  tagline: string;
+  variant: Variant;
+  badge?: string;
+  icon: typeof PlayCircle;
+  features: string[];
+  result: string;
+}[] = [
   {
+    number: "02",
     name: "Старт",
     price: "4 000",
     tagline: "Для уверенного запуска",
-    featured: false,
+    variant: "dark",
+    icon: PlayCircle,
     features: [
       "Аудит и упаковка профиля",
       "Анализ ниши и 5 конкурентов",
@@ -21,25 +44,30 @@ const plans = [
     result: "Оформленный блог и первый месяц контента.",
   },
   {
+    number: "03",
     name: "Рост",
     price: "6 000",
-    tagline: "Популярный выбор",
-    featured: true,
+    tagline: "Для регулярного роста",
+    variant: "lime",
+    badge: "ПОПУЛЯРНЫЙ",
+    icon: TrendingUp,
     features: [
       "Всё из тарифа «Старт»",
       "Глубокий анализ рынка и 10 конкурентов",
       "2 съёмочных дня (до 12 коротких видео)",
       "Модель в кадре",
       "Обложки, тексты и хештеги",
-      "Публикация контента, ежемесячная аналитика",
+      "Публикация контента и ежемесячная аналитика",
     ],
     result: "Системный контент и рост узнаваемости.",
   },
   {
+    number: "04",
     name: "Лидер",
     price: "10 000",
     tagline: "Для активного масштабирования",
-    featured: false,
+    variant: "cream",
+    icon: Crown,
     features: [
       "Всё из тарифа «Рост»",
       "Полная стратегия продвижения",
@@ -52,6 +80,51 @@ const plans = [
     result: "Медиа-система, которая привлекает клиентов.",
   },
 ];
+
+const variantStyles: Record<
+  Variant,
+  {
+    card: string;
+    muted: string;
+    price: string;
+    check: string;
+    iconRing: string;
+    arrowBtn: string;
+    resultBox: string;
+    button: string;
+  }
+> = {
+  dark: {
+    card: "bg-surface border border-white/10 text-white",
+    muted: "text-white/50",
+    price: "text-lime-500",
+    check: "text-magenta-500",
+    iconRing: "from-violet-500 via-magenta-500 to-lime-500",
+    arrowBtn: "border-white/15 text-white/70",
+    resultBox: "bg-black/50 border border-white/10 text-white/70",
+    button: "bg-lime-500 text-bg hover:bg-lime-400 hover:shadow-neon",
+  },
+  lime: {
+    card: "bg-lime-500 text-bg",
+    muted: "text-bg/60",
+    price: "text-bg",
+    check: "text-bg",
+    iconRing: "from-violet-500 via-magenta-500 to-electric-500",
+    arrowBtn: "border-bg/20 text-bg/70",
+    resultBox: "bg-bg/90 text-white/80",
+    button: "bg-bg text-lime-400 hover:bg-black",
+  },
+  cream: {
+    card: "bg-cream text-bg",
+    muted: "text-bg/55",
+    price: "text-magenta-600",
+    check: "text-magenta-600",
+    iconRing: "from-violet-500 via-magenta-400 to-amber-300",
+    arrowBtn: "border-bg/15 text-bg/70",
+    resultBox: "bg-bg/90 text-white/80",
+    button: "bg-magenta-500 text-white hover:bg-magenta-600 hover:shadow-neon-magenta",
+  },
+};
 
 export default function Pricing() {
   const { openModal } = useContactModal();
@@ -77,74 +150,96 @@ export default function Pricing() {
         </motion.div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {plans.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative flex flex-col rounded-3xl p-7 ${
-                plan.featured
-                  ? "border-2 border-lime-500 bg-surface shadow-neon lg:-translate-y-4"
-                  : "border border-white/10 bg-surface"
-              }`}
-            >
-              {plan.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-lime-500 px-4 py-1 text-xs font-bold text-bg">
-                  Популярный
-                </span>
-              )}
+          {plans.map((plan, i) => {
+            const s = variantStyles[plan.variant];
+            const Icon = plan.icon;
 
-              <h3 className="font-display text-xl font-bold text-white">
-                {plan.name}
-              </h3>
-              <p className="mt-1 text-sm text-white/50">{plan.tagline}</p>
-
-              <div className="mt-5 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-black text-white">
-                  {plan.price}
-                </span>
-                <span className="text-sm text-white/50">сомони / мес</span>
-              </div>
-
-              <ul className="mt-6 flex-1 space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex gap-3 text-sm text-white/70">
-                    <Check
-                      size={18}
-                      className={
-                        plan.featured ? "mt-0.5 shrink-0 text-lime-500" : "mt-0.5 shrink-0 text-violet-500"
-                      }
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <p className="mt-6 rounded-xl bg-white/5 px-4 py-3 text-xs leading-relaxed text-white/50">
-                <span className="font-semibold text-white/70">Результат: </span>
-                {plan.result}
-              </p>
-
-              <button
-                onClick={() => openModal(plan.name)}
-                className={`mt-6 flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold transition ${
-                  plan.featured
-                    ? "bg-lime-500 text-bg hover:bg-lime-400 hover:shadow-neon"
-                    : "border border-white/15 text-white hover:border-lime-500 hover:text-lime-500"
+            return (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className={`relative flex flex-col overflow-hidden rounded-[2rem] p-7 sm:p-8 ${s.card} ${
+                  plan.variant === "lime" ? "shadow-neon lg:-translate-y-4" : ""
                 }`}
               >
-                Выбрать тариф
-                <ArrowRight size={16} />
-              </button>
-            </motion.div>
-          ))}
+                <div
+                  className={`pointer-events-none absolute -right-8 -top-8 h-36 w-36 rounded-full bg-gradient-to-br ${s.iconRing} opacity-90 blur-[2px]`}
+                >
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-black/20" />
+                </div>
+                <Icon
+                  size={40}
+                  strokeWidth={1.5}
+                  className="pointer-events-none absolute right-6 top-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+                />
+
+                <div className="relative flex items-center justify-between">
+                  <div className={`flex items-center gap-1.5 text-xs font-bold ${s.muted}`}>
+                    <Grip size={14} />
+                    {plan.number}
+                  </div>
+                  <div
+                    className={`flex h-9 w-9 items-center justify-center rounded-full border ${s.arrowBtn}`}
+                  >
+                    <ArrowUpRight size={16} />
+                  </div>
+                </div>
+
+                {plan.badge && (
+                  <span className="relative mt-5 inline-block w-fit rounded-full bg-magenta-500 px-3 py-1 text-[11px] font-bold tracking-wide text-white">
+                    {plan.badge}
+                  </span>
+                )}
+
+                <h3 className={`relative font-display text-2xl font-black uppercase ${plan.badge ? "mt-3" : "mt-6"}`}>
+                  {plan.name}
+                </h3>
+
+                <div className="relative mt-3 flex items-baseline gap-2">
+                  <span className="font-display text-4xl font-black sm:text-5xl">
+                    {plan.price}
+                  </span>
+                  <span className={`text-sm ${s.muted}`}>сомони / месяц</span>
+                </div>
+                <p className={`relative mt-1 text-sm font-medium ${s.muted}`}>
+                  {plan.tagline}
+                </p>
+
+                <ul className="relative mt-6 flex-1 space-y-2.5">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex gap-2.5 text-sm">
+                      <Check size={18} className={`mt-0.5 shrink-0 ${s.check}`} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <p className={`relative mt-6 rounded-2xl px-4 py-3 text-xs leading-relaxed ${s.resultBox}`}>
+                  <span className="font-semibold text-white">Результат: </span>
+                  {plan.result}
+                </p>
+
+                <button
+                  onClick={() => openModal(plan.name)}
+                  className={`relative mt-6 flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold transition ${s.button}`}
+                >
+                  Выбрать тариф
+                  <ArrowRight size={16} />
+                </button>
+              </motion.div>
+            );
+          })}
         </div>
 
-        <p className="mt-8 text-center text-xs text-white/40">
-          Старт работы — после предоплаты.
-        </p>
+        <div className="mt-10 flex justify-center">
+          <span className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold text-white/70">
+            <CreditCard size={14} className="text-lime-500" />
+            Старт работы — после предоплаты
+          </span>
+        </div>
       </div>
     </section>
   );
