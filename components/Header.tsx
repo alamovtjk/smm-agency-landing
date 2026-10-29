@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Zap } from "lucide-react";
 import { useContactModal } from "./ModalProvider";
+import { useLockBodyAndEscape } from "@/lib/useLockBodyAndEscape";
 
 const links = [
   { href: "#services", label: "Услуги" },
@@ -16,6 +17,9 @@ const links = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { openModal } = useContactModal();
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  useLockBodyAndEscape(menuOpen, closeMenu);
 
   return (
     <header className="fixed top-0 z-50 w-full">

@@ -18,24 +18,21 @@ export default function Footer() {
         </p>
 
         <div className="flex gap-3">
-          <a
-            href="https://instagram.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 transition hover:border-lime-500 hover:text-lime-500"
-            aria-label="Instagram"
+          {/* TODO: заменить на <a href="..."> с реальными ссылками, когда появятся аккаунты в соцсетях */}
+          <span
+            title="Скоро здесь появится ссылка на Instagram"
+            aria-label="Instagram (скоро)"
+            className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-full border border-white/15 text-white/30"
           >
             <Instagram size={16} />
-          </a>
-          <a
-            href="https://t.me/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 transition hover:border-lime-500 hover:text-lime-500"
-            aria-label="Telegram"
+          </span>
+          <span
+            title="Скоро здесь появится ссылка на Telegram"
+            aria-label="Telegram (скоро)"
+            className="flex h-9 w-9 cursor-not-allowed items-center justify-center rounded-full border border-white/15 text-white/30"
           >
             <Send size={16} />
-          </a>
+          </span>
         </div>
       </div>
     </footer>

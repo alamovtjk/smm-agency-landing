@@ -28,15 +28,14 @@ export default function CTA() {
         </p>
 
         <div className="relative mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="https://t.me/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon"
+          {/* TODO: заменить на <a href="..."> с реальной ссылкой, когда появится Telegram-аккаунт */}
+          <span
+            title="Скоро здесь появится ссылка на Telegram"
+            className="flex cursor-not-allowed items-center gap-2 rounded-xl bg-lime-500/40 px-6 py-3.5 text-sm font-bold text-bg/70"
           >
             <Send size={18} />
-            Написать в Telegram
-          </a>
+            Telegram скоро
+          </span>
           <button
             onClick={() => openModal()}
             className="flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/40"

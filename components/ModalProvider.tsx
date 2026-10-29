@@ -8,11 +8,15 @@ import {
   useState,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Send, CheckCircle2 } from "lucide-react";
+import { X, Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { useLockBodyAndEscape } from "@/lib/useLockBodyAndEscape";
+import { submitLead } from "@/lib/submitLead";
 
 type ModalContextValue = {
   openModal: (plan?: string) => void;
 };
+
+type Status = "idle" | "submitting" | "submitted" | "error";
 
 const ModalContext = createContext<ModalContextValue | null>(null);
 
@@ -24,14 +28,18 @@ export function useContactModal() {
   return ctx;
 }
 
+const emptyForm = { name: "", contact: "", comment: "" };
+
 export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [plan, setPlan] = useState<string | undefined>(undefined);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [form, setForm] = useState(emptyForm);
 
   const openModal = useCallback((selectedPlan?: string) => {
     setPlan(selectedPlan);
-    setSubmitted(false);
+    setStatus("idle");
+    setForm(emptyForm);
     setIsOpen(true);
   }, []);
 
@@ -39,11 +47,19 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     setIsOpen(false);
   }, []);
 
+  useLockBodyAndEscape(isOpen, closeModal);
+
   const value = useMemo(() => ({ openModal }), [openModal]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setStatus("submitting");
+    try {
+      await submitLead({ ...form, plan });
+      setStatus("submitted");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -60,6 +76,9 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
             onClick={closeModal}
           >
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-modal-title"
               className="glass relative w-full max-w-md rounded-3xl p-6 sm:p-8"
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -75,9 +94,12 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
                 <X size={20} />
               </button>
 
-              {!submitted ? (
+              {status !== "submitted" ? (
                 <>
-                  <h3 className="font-display text-2xl font-bold text-white">
+                  <h3
+                    id="contact-modal-title"
+                    className="font-display text-2xl font-bold text-white"
+                  >
                     Обсудим ваш проект
                   </h3>
                   <p className="mt-2 text-sm text-white/60">
@@ -88,52 +110,107 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
 
                   <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50">
+                      <label
+                        htmlFor="lead-name"
+                        className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50"
+                      >
                         Имя
                       </label>
                       <input
+                        id="lead-name"
+                        name="name"
                         required
                         type="text"
+                        autoComplete="name"
                         placeholder="Как вас зовут?"
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500"
+                        value={form.name}
+                        onChange={(e) =>
+                          setForm((f) => ({ ...f, name: e.target.value }))
+                        }
+                        disabled={status === "submitting"}
+                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500 disabled:opacity-60"
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50">
+                      <label
+                        htmlFor="lead-contact"
+                        className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50"
+                      >
                         Телефон или Telegram
                       </label>
                       <input
+                        id="lead-contact"
+                        name="contact"
                         required
                         type="text"
+                        autoComplete="tel"
                         placeholder="+992 ___ ___ ___ или @username"
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500"
+                        value={form.contact}
+                        onChange={(e) =>
+                          setForm((f) => ({ ...f, contact: e.target.value }))
+                        }
+                        disabled={status === "submitting"}
+                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500 disabled:opacity-60"
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50">
+                      <label
+                        htmlFor="lead-comment"
+                        className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-white/50"
+                      >
                         Комментарий
                       </label>
                       <textarea
+                        id="lead-comment"
+                        name="comment"
                         rows={3}
                         placeholder="Коротко о проекте (необязательно)"
-                        className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500"
+                        value={form.comment}
+                        onChange={(e) =>
+                          setForm((f) => ({ ...f, comment: e.target.value }))
+                        }
+                        disabled={status === "submitting"}
+                        className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-lime-500 focus:ring-1 focus:ring-lime-500 disabled:opacity-60"
                       />
                     </div>
 
+                    {status === "error" && (
+                      <p
+                        role="alert"
+                        className="flex items-center gap-2 text-xs font-medium text-magenta-400"
+                      >
+                        <AlertCircle size={14} />
+                        Не получилось отправить заявку. Попробуйте ещё раз.
+                      </p>
+                    )}
+
                     <button
                       type="submit"
-                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon"
+                      disabled={status === "submitting"}
+                      className="group flex w-full items-center justify-center gap-2 rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon disabled:cursor-not-allowed disabled:opacity-70"
                     >
-                      Отправить заявку
-                      <Send
-                        size={16}
-                        className="transition group-hover:translate-x-0.5"
-                      />
+                      {status === "submitting" ? (
+                        <>
+                          Отправляем...
+                          <Loader2 size={16} className="animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Отправить заявку
+                          <Send
+                            size={16}
+                            className="transition group-hover:translate-x-0.5"
+                          />
+                        </>
+                      )}
                     </button>
                   </form>
                 </>
               ) : (
-                <div className="flex flex-col items-center py-8 text-center">
+                <div
+                  role="status"
+                  className="flex flex-col items-center py-8 text-center"
+                >
                   <CheckCircle2 size={48} className="text-lime-500" />
                   <h3 className="mt-4 font-display text-xl font-bold text-white">
                     Заявка отправлена!
