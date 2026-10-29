@@ -217,7 +217,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
                   </h3>
                   <p className="mt-2 text-sm text-white/60">
                     Мы свяжемся с вами в ближайшее время. Спасибо за интерес к
-                    AlTeNo.
+                    Tricid Lab.
                   </p>
                   <button
                     onClick={closeModal}

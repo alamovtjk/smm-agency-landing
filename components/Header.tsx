@@ -2,9 +2,10 @@
 
 import { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useContactModal } from "./ModalProvider";
 import { useLockBodyAndEscape } from "@/lib/useLockBodyAndEscape";
+import { Logo } from "./Logo";
 
 const links = [
   { href: "#services", label: "Услуги" },
@@ -24,13 +25,8 @@ export default function Header() {
   return (
     <header className="fixed top-0 z-50 w-full">
       <div className="glass mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-2xl px-5 py-3 sm:mt-4 sm:px-6">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-lime-500 text-bg">
-            <Zap size={18} strokeWidth={2.5} />
-          </span>
-          <span className="font-display text-lg font-bold text-white">
-            Al<span className="text-lime-500">Te</span>No
-          </span>
+        <a href="#top" className="flex items-center">
+          <Logo className="h-8 w-auto sm:h-9" priority />
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -70,9 +66,7 @@ export default function Header() {
             exit={{ opacity: 0 }}
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <span className="font-display text-lg font-bold text-white">
-                Al<span className="text-lime-500">Te</span>No
-              </span>
+              <Logo className="h-8 w-auto" />
               <button
                 onClick={() => setMenuOpen(false)}
                 className="rounded-lg p-2 text-white"
