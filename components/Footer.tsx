@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="border-t border-white/10 px-5 py-10 sm:px-6">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
         <a href="#top" className="flex items-center">
-          <Logo className="h-9 w-auto" plaque />
+          <Logo className="h-11 w-auto" plaque />
         </a>
 
         <p className="text-xs text-white/40">
