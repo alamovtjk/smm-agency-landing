@@ -10,7 +10,7 @@ export default function Footer() {
         </a>
 
         <p className="text-xs text-white/40">
-          © {new Date().getFullYear()} Tricid Lab. Все права защищены.
+          © {new Date().getFullYear()} TC. Все права защищены.
         </p>
 
         <div className="flex gap-3">

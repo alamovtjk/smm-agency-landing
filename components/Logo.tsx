@@ -32,10 +32,10 @@ export function Logo({
         className="pointer-events-none absolute -inset-3 -z-10 animate-pulse-slow rounded-full bg-glow-lime opacity-60 blur-xl"
       />
       <Image
-        src={`${basePath}/logo-tricid-lab.png`}
-        alt="Tricid Lab"
-        width={900}
-        height={424}
+        src={`${basePath}/logo-triolab.png`}
+        alt="TC"
+        width={983}
+        height={702}
         priority={priority}
         className={`${className} select-none object-contain`}
       />

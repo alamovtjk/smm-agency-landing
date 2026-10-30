@@ -24,9 +24,9 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Tricid Lab — продвижение бизнеса и блогов под ключ",
+  title: "TC — продвижение бизнеса и блогов под ключ",
   description:
-    "СММ-агентство Tricid Lab: стратегия, съёмка, дизайн и автоматизация продаж. Продвигаем бизнес и блоги под ключ.",
+    "СММ-агентство TC: стратегия, съёмка, дизайн и автоматизация продаж. Продвигаем бизнес и блоги под ключ.",
   icons: {
     icon: `${basePath}/favicon.png`,
   },
@@ -35,11 +35,11 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Tricid Lab — продвижение бизнеса и блогов под ключ",
+    title: "TC — продвижение бизнеса и блогов под ключ",
     description:
-      "СММ-агентство Tricid Lab: стратегия, съёмка, дизайн и автоматизация продаж.",
+      "СММ-агентство TC: стратегия, съёмка, дизайн и автоматизация продаж.",
     url: siteUrl,
-    siteName: "Tricid Lab",
+    siteName: "TC",
     locale: "ru_RU",
     type: "website",
   },
