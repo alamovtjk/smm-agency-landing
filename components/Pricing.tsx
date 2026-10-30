@@ -12,8 +12,6 @@ import {
   CreditCard,
 } from "lucide-react";
 import { useContactModal } from "./ModalProvider";
-import { Grain } from "./Grain";
-import { Sparks } from "./Sparks";
 
 type Variant = "dark" | "lime" | "cream";
 
@@ -104,7 +102,7 @@ const variantStyles: Record<
     iconRing: "from-violet-500 via-magenta-500 to-lime-500",
     arrowBtn: "border-white/15 text-white/70",
     resultBox: "bg-black/50 border border-white/10 text-white/70",
-    button: "bg-lime-500 text-bg hover:bg-lime-400 hover:shadow-neon",
+    button: "btn-primary",
   },
   lime: {
     card: "bg-lime-500 text-bg",
@@ -114,7 +112,7 @@ const variantStyles: Record<
     iconRing: "from-violet-500 via-magenta-500 to-electric-500",
     arrowBtn: "border-bg/20 text-bg/70",
     resultBox: "bg-bg/90 text-white/80",
-    button: "bg-bg text-lime-400 hover:bg-black",
+    button: "rounded-xl px-6 py-3.5 text-sm font-bold transition bg-bg text-lime-400 hover:bg-black",
   },
   cream: {
     card: "bg-cream text-bg",
@@ -124,22 +122,9 @@ const variantStyles: Record<
     iconRing: "from-violet-500 via-magenta-400 to-amber-300",
     arrowBtn: "border-bg/15 text-bg/70",
     resultBox: "bg-bg/90 text-white/80",
-    button: "bg-magenta-500 text-white hover:bg-magenta-600 hover:shadow-neon-magenta",
+    button:
+      "rounded-xl px-6 py-3.5 text-sm font-bold transition bg-magenta-500 text-white hover:bg-magenta-600 hover:shadow-neon-magenta",
   },
-};
-
-const cardSparks: Record<Variant, { top: string; left: string; size: number; delay: number; className?: string }[]> = {
-  dark: [
-    { top: "14%", left: "10%", size: 13, delay: 0 },
-    { top: "42%", left: "88%", size: 10, delay: 0.7, className: "text-magenta-400/70" },
-  ],
-  lime: [
-    { top: "10%", left: "82%", size: 12, delay: 0.3, className: "text-bg/50" },
-    { top: "55%", left: "6%", size: 10, delay: 0.9, className: "text-bg/40" },
-  ],
-  cream: [
-    { top: "16%", left: "14%", size: 12, delay: 0.2, className: "text-magenta-500/60" },
-  ],
 };
 
 export default function Pricing() {
@@ -181,20 +166,12 @@ export default function Pricing() {
                   plan.variant === "lime" ? "shadow-neon lg:-translate-y-4" : ""
                 }`}
               >
-                {plan.variant === "dark" && (
-                  <>
-                    <Grain opacity={0.09} />
-                    <div className="pointer-events-none absolute -bottom-10 -left-10 h-44 w-44 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.45),transparent_65%)] blur-2xl mix-blend-screen" />
-                    <div className="pointer-events-none absolute -bottom-6 left-10 h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(255,46,196,0.35),transparent_65%)] blur-2xl mix-blend-screen" />
-                  </>
-                )}
                 {plan.variant === "cream" && (
                   <>
                     <div className="pointer-events-none absolute -bottom-12 -left-12 h-52 w-52 rounded-full bg-black/60 blur-3xl" />
                     <div className="pointer-events-none absolute right-10 top-16 h-28 w-40 rotate-12 rounded-full border border-magenta-400/40" />
                   </>
                 )}
-                <Sparks items={cardSparks[plan.variant]} />
 
                 <div
                   className={`pointer-events-none absolute -right-8 -top-8 h-36 w-36 rounded-full bg-gradient-to-br ${s.iconRing} opacity-90 blur-[2px]`}
@@ -255,7 +232,7 @@ export default function Pricing() {
 
                 <button
                   onClick={() => openModal(plan.name)}
-                  className={`relative mt-6 flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold transition ${s.button}`}
+                  className={`relative mt-6 flex items-center justify-center gap-2 ${s.button}`}
                 >
                   Выбрать тариф
                   <ArrowRight size={16} />
