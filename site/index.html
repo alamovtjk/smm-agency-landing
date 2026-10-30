@@ -225,11 +225,23 @@ section{position:relative;padding:88px 0;z-index:2}
 }
 #hero .tag .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:badgePulse 1.6s infinite}
 @keyframes badgePulse{50%{opacity:.3}}
-#hero h1{font-size:clamp(44px,7vw,112px);max-width:780px}
-#hero h1 .accent .lchar{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-#hero .sub{margin-top:26px;max-width:540px;color:var(--fg2);font-size:16px}
-@media(min-width:640px){#hero .sub{font-size:18px}}
-#hero .ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.hero-h1-wrap{position:relative}
+.hero-h1{font-size:clamp(44px,10vw,132px);line-height:.98}
+.hero-h1 .line{display:block}
+.hero-h1 .line.accent .lchar{color:var(--lime);text-shadow:0 0 30px rgba(184,255,60,.5)}
+.hero-diagonal{
+  position:absolute;left:42%;top:-10%;width:3px;height:68%;
+  background:var(--lime);
+  box-shadow:0 0 14px rgba(184,255,60,.9),0 0 46px rgba(184,255,60,.5);
+  transform:rotate(-30deg);transform-origin:center;
+  pointer-events:none;display:none;
+}
+@media(min-width:900px){.hero-diagonal{display:block}}
+.hero-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-top:40px}
+.hero-caption{font-family:'Unbounded',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(18px,2.4vw,26px);line-height:1.1;color:var(--fg);margin:0}
+.hero-row .sub{margin:0;max-width:420px;flex:1 1 260px;color:var(--fg2);font-size:16px}
+@media(min-width:640px){.hero-row .sub{font-size:18px}}
+.hero-row .ctas{display:flex;flex-wrap:wrap;gap:14px;margin:0}
 #hero .stats{display:flex;flex-wrap:wrap;gap:40px;margin-top:56px}
 #hero .stat b{font-family:'Unbounded',sans-serif;font-weight:900;font-size:26px;display:block}
 #hero .stat span{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg3)}
@@ -432,11 +444,20 @@ footer .copy{font-size:12px;color:var(--fg3)}
       <div class="container inner">
         <div class="reveal-group">
           <span class="tag rise"><span class="dot"></span>Продвижение под ключ</span>
-          <h1 data-split>Продвижение бизнеса <span class="accent">и блогов</span> под ключ</h1>
-          <p class="sub"><span class="clip">От стратегии и съёмки — до узнаваемого бренда и потока клиентов. Берём весь SMM на себя: контент, дизайн, продажи и автоматизацию.</span></p>
-          <div class="ctas rise">
-            <button class="btn btn-primary with-arrow" data-open-modal>Обсудить проект<span class="arrow">↗</span></button>
-            <a href="#cases" class="btn btn-secondary">Смотреть кейсы</a>
+          <div class="hero-h1-wrap">
+            <h1 data-split class="hero-h1">
+              <span class="line">Продвижение</span>
+              <span class="line accent">под ключ</span>
+            </h1>
+            <div class="hero-diagonal" aria-hidden="true"></div>
+          </div>
+          <div class="hero-row rise">
+            <p class="hero-caption">бизнеса<br>и блогов</p>
+            <p class="sub"><span class="clip">От стратегии и съёмки — до узнаваемого бренда и потока клиентов. Берём весь SMM на себя: контент, дизайн, продажи и автоматизацию.</span></p>
+            <div class="ctas">
+              <button class="btn btn-primary with-arrow" data-open-modal>Обсудить проект<span class="arrow">↗</span></button>
+              <a href="#cases" class="btn btn-secondary">Смотреть кейсы</a>
+            </div>
           </div>
           <div class="stats rise">
             <div class="stat"><b class="counter" data-target="120" data-suffix="+">0</b><span>проектов запущено</span></div>
