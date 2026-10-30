@@ -63,3 +63,13 @@ body::before {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+@layer components {
+  .btn-primary {
+    @apply rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon;
+  }
+
+  .btn-outline {
+    @apply rounded-xl border border-white/15 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/40;
+  }
+}
