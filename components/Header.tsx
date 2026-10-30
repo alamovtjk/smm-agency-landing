@@ -43,7 +43,7 @@ export default function Header() {
 
         <button
           onClick={() => openModal()}
-          className="hidden rounded-xl bg-lime-500 px-5 py-2.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon lg:block"
+          className="btn-primary hidden lg:block"
         >
           Обсудить проект
         </button>
@@ -91,7 +91,7 @@ export default function Header() {
                   setMenuOpen(false);
                   openModal();
                 }}
-                className="mt-4 w-full max-w-xs rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg"
+                className="btn-primary mt-4 w-full max-w-xs"
               >
                 Обсудить проект
               </button>
