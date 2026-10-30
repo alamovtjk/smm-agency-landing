@@ -23,16 +23,23 @@
 
 :root{
   --bg:#0a0a0a;
-  --bg2:#101014;
-  --fg:rgba(245,245,250,.92);
-  --fg2:rgba(230,230,240,.65);
-  --fg3:rgba(230,230,240,.4);
-  --a1:#5b5bff;
-  --a2:#a855f7;
+  --bg2:#121212;
+  --fg:rgba(255,255,255,.92);
+  --fg2:rgba(255,255,255,.6);
+  --fg3:rgba(255,255,255,.4);
+  --lime:#b8ff3c;
+  --lime2:#d4ff6e;
+  --violet:#8b5cf6;
+  --violet2:#7c3aed;
+  --magenta:#ff2ec4;
+  --magenta2:#e014a8;
+  --cream:#f2e9d8;
+  --a1:var(--lime);
+  --a2:var(--violet);
   --line:rgba(255,255,255,.1);
   --line-soft:rgba(255,255,255,.06);
   --nav-h:64px;
-  --grad:linear-gradient(90deg,var(--a1),var(--a2));
+  --grad:linear-gradient(90deg,var(--lime),var(--lime2) 50%,var(--violet) 100%);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -58,7 +65,7 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 ul{list-style:none}
-::selection{background:var(--a1);color:#fff}
+::selection{background:var(--lime);color:var(--bg)}
 
 .container{max-width:1180px;margin:0 auto;padding:0 20px}
 @media(min-width:640px){.container{padding:0 32px}}
@@ -72,17 +79,17 @@ ul{list-style:none}
   background-size:180px 180px;
 }
 .bg-fx .glow{position:absolute;border-radius:50%;filter:blur(80px);will-change:transform}
-.bg-fx .glow-1{width:640px;height:640px;left:-120px;top:-80px;background:radial-gradient(circle,rgba(91,91,255,.35),transparent 70%)}
-.bg-fx .glow-2{width:560px;height:560px;right:-160px;top:380px;background:radial-gradient(circle,rgba(168,85,247,.28),transparent 70%)}
-.bg-fx .glow-3{width:520px;height:520px;left:10%;top:1400px;background:radial-gradient(circle,rgba(91,91,255,.2),transparent 70%)}
-.bg-fx .glow-4{width:560px;height:560px;right:-100px;top:2300px;background:radial-gradient(circle,rgba(168,85,247,.22),transparent 70%)}
+.bg-fx .glow-1{width:640px;height:640px;left:-120px;top:-80px;background:radial-gradient(circle,rgba(184,255,60,.3),transparent 70%)}
+.bg-fx .glow-2{width:560px;height:560px;right:-160px;top:380px;background:radial-gradient(circle,rgba(139,92,246,.3),transparent 70%)}
+.bg-fx .glow-3{width:520px;height:520px;left:10%;top:1400px;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%)}
+.bg-fx .glow-4{width:560px;height:560px;right:-100px;top:2300px;background:radial-gradient(circle,rgba(184,255,60,.22),transparent 70%)}
 
 /* cursor glow */
 #cursor-glow{
   position:fixed;top:0;left:0;width:520px;height:520px;
   margin-left:-260px;margin-top:-260px;
   border-radius:50%;pointer-events:none;z-index:1;
-  background:radial-gradient(circle,rgba(130,110,255,.35),transparent 65%);
+  background:radial-gradient(circle,rgba(139,92,246,.35),transparent 65%);
   mix-blend-mode:screen;
   opacity:0;transition:opacity .4s ease;
   will-change:transform;
@@ -125,8 +132,8 @@ html.rig #scroller{position:fixed;top:0;left:0;will-change:transform}
   font-size:14px;font-weight:600;
   transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
 }
-.btn-primary{background:var(--grad);color:#fff}
-.btn-primary:hover{box-shadow:0 0 0 1px rgba(255,255,255,.2) inset,0 12px 30px -8px rgba(91,91,255,.6);transform:translateY(-1px)}
+.btn-primary{background:var(--lime);color:var(--bg)}
+.btn-primary:hover{background:var(--lime2);box-shadow:0 0 20px rgba(184,255,60,.5),0 0 60px rgba(184,255,60,.15);transform:translateY(-1px)}
 .btn-outline{border:1px solid var(--line);color:var(--fg)}
 .btn-outline:hover{border-color:rgba(255,255,255,.35);transform:translateY(-1px)}
 .btn-sm{padding:9px 18px;font-size:13px}
@@ -187,7 +194,7 @@ section{position:relative;padding:88px 0;z-index:2}
   border:1px solid var(--line);background:rgba(255,255,255,.03);
   font-size:12px;color:var(--fg2);margin-bottom:22px;
 }
-#hero .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--grad)}
+#hero .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--lime)}
 #hero h1{font-size:38px;max-width:780px}
 @media(min-width:640px){#hero h1{font-size:58px}}
 @media(min-width:1100px){#hero h1{font-size:72px}}
@@ -207,12 +214,13 @@ section{position:relative;padding:88px 0;z-index:2}
   padding:28px;overflow:hidden;
 }
 .card .num{position:absolute;top:-6px;right:12px;font-family:'Oswald',sans-serif;font-size:72px;font-weight:700;color:rgba(255,255,255,.035)}
-.card .icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;color:var(--a1)}
+.card .icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;color:var(--lime);transition:background .25s,color .25s}
+.tilt-wrap:hover .icon{background:var(--lime);color:var(--bg)}
 .card h3{font-size:17px;text-transform:none;letter-spacing:0;margin-top:18px;font-weight:600;font-family:'Inter',sans-serif}
 .card p{margin-top:8px;font-size:14px;color:var(--fg2);line-height:1.6}
 .tilt-wrap{transform-style:preserve-3d;transition:transform .35s cubic-bezier(.22,1,.36,1)}
 .tilt-wrap .card{transition:border-color .3s}
-.tilt-wrap:hover .card{border-color:rgba(130,110,255,.4)}
+.tilt-wrap:hover .card{border-color:rgba(184,255,60,.4)}
 
 /* ---------- cases ---------- */
 .cases-grid{display:grid;gap:16px;margin-top:48px;grid-template-columns:1fr}
@@ -223,7 +231,7 @@ section{position:relative;padding:88px 0;z-index:2}
 }
 .case .niche{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3)}
 .case h3{font-size:16px;text-transform:none;letter-spacing:0;font-weight:600;font-family:'Inter',sans-serif;margin-top:10px;line-height:1.5}
-.case .metric{margin-top:26px;font-family:'Oswald',sans-serif;font-size:40px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.case .metric{margin-top:26px;font-family:'Oswald',sans-serif;font-size:40px;color:var(--lime)}
 .case .metric-label{font-size:12px;color:var(--fg3);margin-top:2px}
 
 /* ---------- pricing ---------- */
@@ -231,29 +239,39 @@ section{position:relative;padding:88px 0;z-index:2}
 @media(min-width:960px){.pricing-grid{grid-template-columns:repeat(3,1fr);align-items:start}}
 .plan{
   position:relative;border:1px solid var(--line-soft);border-radius:22px;padding:30px;
-  background:var(--bg2);transition:opacity .35s ease, transform .35s ease;
+  background:var(--bg2);color:var(--fg);transition:opacity .35s ease, transform .35s ease;
 }
-.plan.featured{
-  border:1px solid transparent;
-  background:linear-gradient(var(--bg2),var(--bg2)) padding-box, var(--grad) border-box;
-}
+.plan-lime{background:var(--lime);color:var(--bg);border-color:transparent;box-shadow:0 0 20px rgba(184,255,60,.5),0 0 60px rgba(184,255,60,.15)}
+.plan-cream{background:var(--cream);color:var(--bg)}
 @media(min-width:960px){.plan.featured{padding:38px 30px;transform:translateY(-10px)}}
 .pricing-grid:hover .plan{opacity:.55;transform:scale(.98)}
 .pricing-grid .plan:hover{opacity:1!important;transform:scale(1)!important}
 @media(min-width:960px){.pricing-grid:hover .plan.featured{transform:translateY(-10px) scale(.98)}
 .pricing-grid .plan.featured:hover{transform:translateY(-10px) scale(1)!important}}
-.plan .badge{position:absolute;top:-13px;left:30px;padding:5px 14px;border-radius:999px;background:var(--grad);font-size:11px;font-weight:700;letter-spacing:.04em}
+.plan .badge{position:absolute;top:-13px;left:30px;padding:5px 14px;border-radius:999px;background:var(--magenta);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
 .plan h3{font-size:20px}
 .plan .tagline{color:var(--fg3);font-size:13px;margin-top:4px}
+.plan-lime .tagline,.plan-cream .tagline{color:rgba(10,10,10,.55)}
 .plan .price{display:flex;align-items:baseline;gap:8px;margin-top:20px}
-.plan .price b{font-family:'Oswald',sans-serif;font-size:38px}
+.plan .price b{font-family:'Oswald',sans-serif;font-size:38px;color:var(--lime)}
+.plan-lime .price b{color:var(--bg)}
+.plan-cream .price b{color:var(--magenta)}
 .plan .price span{color:var(--fg3);font-size:13px}
+.plan-lime .price span,.plan-cream .price span{color:rgba(10,10,10,.5)}
 .plan ul{margin-top:22px;display:flex;flex-direction:column;gap:10px}
 .plan li{display:flex;gap:10px;font-size:14px;color:var(--fg2);align-items:flex-start}
-.plan li svg{flex:none;margin-top:3px;color:var(--a2)}
+.plan-lime li,.plan-cream li{color:rgba(10,10,10,.75)}
+.plan li svg{flex:none;margin-top:3px;color:var(--magenta)}
+.plan-lime li svg{color:var(--bg)}
 .plan .result{margin-top:22px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line-soft);padding:14px;font-size:12.5px;color:var(--fg2);line-height:1.6}
 .plan .result b{color:var(--fg);font-weight:600}
+.plan-lime .result,.plan-cream .result{background:rgba(10,10,10,.9);border-color:transparent;color:rgba(255,255,255,.8)}
+.plan-lime .result b,.plan-cream .result b{color:#fff}
 .plan .btn{width:100%;justify-content:center;margin-top:22px}
+.plan-lime .btn{background:var(--bg);color:var(--lime)}
+.plan-lime .btn:hover{background:#000;box-shadow:none}
+.plan-cream .btn{background:var(--magenta);color:#fff;border-color:transparent}
+.plan-cream .btn:hover{background:var(--magenta2);box-shadow:0 0 20px rgba(255,46,196,.45),0 0 60px rgba(255,46,196,.15)}
 .pricing-note{display:flex;justify-content:center;margin-top:36px}
 .pricing-note span{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);font-size:12.5px;color:var(--fg2)}
 
@@ -280,7 +298,7 @@ section{position:relative;padding:88px 0;z-index:2}
 @media(min-width:640px){#contacts h2{font-size:38px}}
 #contacts p{color:var(--fg2);margin-top:14px;max-width:420px;margin-left:auto;margin-right:auto}
 #contacts .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:30px}
-.btn-disabled{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;background:rgba(91,91,255,.15);color:rgba(245,245,250,.45);cursor:not-allowed}
+.btn-disabled{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;background:rgba(184,255,60,.25);color:rgba(10,10,10,.55);cursor:not-allowed}
 
 /* ---------- footer ---------- */
 footer{position:relative;z-index:2;border-top:1px solid var(--line-soft);padding:40px 0}
@@ -507,7 +525,7 @@ footer .copy{font-size:12px;color:var(--fg3)}
 
         <div class="pricing-grid">
 
-          <div class="plan rise">
+          <div class="plan plan-dark rise">
             <h3>Старт</h3>
             <p class="tagline">Для уверенного запуска</p>
             <div class="price"><b>4 000</b><span>сомони / месяц</span></div>
@@ -520,10 +538,10 @@ footer .copy{font-size:12px;color:var(--fg3)}
               <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Сценарии, монтаж и субтитры</li>
             </ul>
             <p class="result"><b>Результат:</b> Оформленный блог и первый месяц контента.</p>
-            <button class="btn btn-outline" data-open-modal data-plan="Старт">Выбрать тариф</button>
+            <button class="btn btn-primary" data-open-modal data-plan="Старт">Выбрать тариф</button>
           </div>
 
-          <div class="plan featured rise" style="transition-delay:.1s">
+          <div class="plan plan-lime featured rise" style="transition-delay:.1s">
             <span class="badge">ПОПУЛЯРНЫЙ</span>
             <h3>Рост</h3>
             <p class="tagline">Для регулярного роста</p>
@@ -540,7 +558,7 @@ footer .copy{font-size:12px;color:var(--fg3)}
             <button class="btn btn-primary" data-open-modal data-plan="Рост">Выбрать тариф</button>
           </div>
 
-          <div class="plan rise" style="transition-delay:.2s">
+          <div class="plan plan-cream rise" style="transition-delay:.2s">
             <h3>Лидер</h3>
             <p class="tagline">Для активного масштабирования</p>
             <div class="price"><b>10 000</b><span>сомони / месяц</span></div>
@@ -561,7 +579,7 @@ footer .copy{font-size:12px;color:var(--fg3)}
 
         <div class="pricing-note rise">
           <span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             Старт работы — после предоплаты
           </span>
         </div>
@@ -580,8 +598,8 @@ footer .copy{font-size:12px;color:var(--fg3)}
           <svg viewBox="0 0 1000 4" preserveAspectRatio="none">
             <defs>
               <linearGradient id="procGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#5b5bff"/>
-                <stop offset="1" stop-color="#a855f7"/>
+                <stop offset="0" stop-color="#b8ff3c"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
               </linearGradient>
             </defs>
             <path d="M0,2 H1000" />
@@ -949,14 +967,14 @@ if (!REDUCE && window.matchMedia && !matchMedia('(pointer: coarse)').matches) {
       var pa = particles[a];
       ctx.beginPath();
       ctx.arc(pa.x, pa.y, 1.4, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(140,140,255,.55)';
+      ctx.fillStyle = 'rgba(184,255,60,.55)';
       ctx.fill();
       for (var b = a + 1; b < particles.length; b++) {
         var pb = particles[b];
         var dx = pa.x - pb.x, dy = pa.y - pb.y;
         var d = Math.sqrt(dx * dx + dy * dy);
         if (d < 120) {
-          ctx.strokeStyle = 'rgba(140,110,255,' + (0.16 * (1 - d / 120)) + ')';
+          ctx.strokeStyle = 'rgba(139,92,246,' + (0.18 * (1 - d / 120)) + ')';
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(pa.x, pa.y);
