@@ -1,18 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, PlayCircle, TrendingUp, Users, Sparkles } from "lucide-react";
+import { ArrowRight, PlayCircle, TrendingUp, Users, Sparkles, Zap } from "lucide-react";
 import { useContactModal } from "./ModalProvider";
 import { Grain } from "./Grain";
-import { Sparks } from "./Sparks";
-
-const heroSparks = [
-  { top: "8%", left: "6%", size: 16, delay: 0 },
-  { top: "18%", left: "46%", size: 12, delay: 0.4, className: "text-lime-400/70" },
-  { top: "4%", left: "88%", size: 14, delay: 0.8, className: "text-magenta-400/70" },
-  { top: "32%", left: "2%", size: 10, delay: 1.2 },
-  { top: "60%", left: "94%", size: 12, delay: 0.6, className: "text-violet-400/70" },
-];
 
 export default function Hero() {
   const { openModal } = useContactModal();
@@ -23,12 +14,9 @@ export default function Hero() {
       className="relative overflow-hidden px-5 pb-20 pt-36 sm:px-6 sm:pt-44 lg:pb-32"
     >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-glow-lime opacity-40 blur-3xl mix-blend-screen" />
-        <div className="absolute right-0 top-20 h-[500px] w-[500px] rounded-full bg-glow-violet opacity-40 blur-3xl mix-blend-screen" />
-        <div className="absolute right-10 top-40 h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(255,46,196,0.3),transparent_65%)] blur-2xl mix-blend-screen" />
-        <Grain opacity={0.08} />
+        <div className="absolute left-1/2 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-glow-lime opacity-25 blur-3xl" />
+        <Grain opacity={0.03} />
       </div>
-      <Sparks items={heroSparks} />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:items-center lg:gap-8">
         <motion.div
@@ -54,7 +42,7 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap gap-4">
             <button
               onClick={() => openModal()}
-              className="group flex items-center gap-2 rounded-xl bg-lime-500 px-6 py-3.5 text-sm font-bold text-bg transition hover:bg-lime-400 hover:shadow-neon"
+              className="btn-primary group flex items-center gap-2"
             >
               Обсудить проект
               <ArrowRight
@@ -64,7 +52,7 @@ export default function Hero() {
             </button>
             <a
               href="#cases"
-              className="group flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3.5 text-sm font-bold text-white transition hover:border-white/40"
+              className="btn-outline group flex items-center gap-2"
             >
               <PlayCircle size={18} />
               Смотреть кейсы
@@ -127,13 +115,11 @@ export default function Hero() {
           </motion.div>
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative h-60 w-60 sm:h-72 sm:w-72">
-              <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_120deg,theme(colors.violet.500),theme(colors.magenta.500),theme(colors.lime.500),theme(colors.violet.500))] opacity-70 blur-xl" />
-              <div className="absolute inset-[18%] rounded-full bg-bg" />
-              <div className="absolute inset-[26%] rounded-full bg-[conic-gradient(from_280deg,theme(colors.magenta.400),theme(colors.violet.500),theme(colors.electric.500),theme(colors.magenta.400))] opacity-80 mix-blend-screen blur-sm" />
+            <div className="h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.35),transparent_70%)] blur-xl sm:h-64 sm:w-64" />
+            <div className="absolute flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-lime-500 shadow-neon-violet">
+              <Zap size={28} strokeWidth={1.75} />
             </div>
-            <div className="absolute h-56 w-56 rounded-full border border-lime-500/30 sm:h-64 sm:w-64" />
-            <div className="absolute h-72 w-72 animate-pulse-slow rounded-full border border-violet-500/20 sm:h-80 sm:w-80" />
+            <div className="absolute h-72 w-72 rounded-full border border-white/10 sm:h-80 sm:w-80" />
           </div>
         </motion.div>
       </div>
