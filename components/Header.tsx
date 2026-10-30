@@ -26,7 +26,7 @@ export default function Header() {
     <header className="fixed top-0 z-50 w-full">
       <div className="glass mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-2xl px-5 py-3 sm:mt-4 sm:px-6">
         <a href="#top" className="flex items-center">
-          <Logo className="h-14 w-auto sm:h-16" priority plaque />
+          <Logo className="h-6 w-auto sm:h-7" priority />
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -66,7 +66,7 @@ export default function Header() {
             exit={{ opacity: 0 }}
           >
             <div className="flex items-center justify-between px-6 py-5">
-              <Logo className="h-12 w-auto" plaque />
+              <Logo className="h-6 w-auto" />
               <button
                 onClick={() => setMenuOpen(false)}
                 className="rounded-lg p-2 text-white"
