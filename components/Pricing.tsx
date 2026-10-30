@@ -131,7 +131,7 @@ export default function Pricing() {
   const { openModal } = useContactModal();
 
   return (
-    <section id="pricing" className="relative px-5 py-20 sm:px-6 lg:py-28">
+    <section id="pricing" className="relative px-5 py-14 sm:px-6 lg:py-20">
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-glow-violet opacity-20 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl">
@@ -145,12 +145,12 @@ export default function Pricing() {
           <span className="text-xs font-bold uppercase tracking-widest text-lime-500">
             Тарифы
           </span>
-          <h2 className="mt-3 font-display text-3xl font-black uppercase leading-tight text-white sm:text-4xl">
+          <h2 className="mt-2 font-display text-2xl font-black uppercase leading-tight text-white sm:text-3xl">
             Продвижение блога под ключ
           </h2>
         </motion.div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {plans.map((plan, i) => {
             const s = variantStyles[plan.variant];
             const Icon = plan.icon;
@@ -162,26 +162,26 @@ export default function Pricing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`relative flex flex-col overflow-hidden rounded-[2rem] p-7 sm:p-8 ${s.card} ${
-                  plan.variant === "lime" ? "shadow-neon lg:-translate-y-4" : ""
+                className={`relative flex flex-col overflow-hidden rounded-3xl p-5 sm:p-6 ${s.card} ${
+                  plan.variant === "lime" ? "shadow-neon lg:-translate-y-3" : ""
                 }`}
               >
                 {plan.variant === "cream" && (
                   <>
-                    <div className="pointer-events-none absolute -bottom-12 -left-12 h-52 w-52 rounded-full bg-black/60 blur-3xl" />
-                    <div className="pointer-events-none absolute right-10 top-16 h-28 w-40 rotate-12 rounded-full border border-magenta-400/40" />
+                    <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-black/60 blur-3xl" />
+                    <div className="pointer-events-none absolute right-8 top-12 h-20 w-32 rotate-12 rounded-full border border-magenta-400/40" />
                   </>
                 )}
 
                 <div
-                  className={`pointer-events-none absolute -right-8 -top-8 h-36 w-36 rounded-full bg-gradient-to-br ${s.iconRing} opacity-90 blur-[2px]`}
+                  className={`pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full bg-gradient-to-br ${s.iconRing} opacity-90 blur-[2px]`}
                 >
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-black/20" />
                 </div>
                 <Icon
-                  size={40}
+                  size={32}
                   strokeWidth={1.5}
-                  className="pointer-events-none absolute right-6 top-6 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+                  className="pointer-events-none absolute right-5 top-5 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
                 />
 
                 <div className="relative flex items-center justify-between">
@@ -190,24 +190,24 @@ export default function Pricing() {
                     {plan.number}
                   </div>
                   <div
-                    className={`flex h-9 w-9 items-center justify-center rounded-full border ${s.arrowBtn}`}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border ${s.arrowBtn}`}
                   >
-                    <ArrowUpRight size={16} />
+                    <ArrowUpRight size={14} />
                   </div>
                 </div>
 
                 {plan.badge && (
-                  <span className="relative mt-5 inline-block w-fit rounded-full bg-magenta-500 px-3 py-1 text-[11px] font-bold tracking-wide text-white">
+                  <span className="relative mt-4 inline-block w-fit rounded-full bg-magenta-500 px-3 py-1 text-[11px] font-bold tracking-wide text-white">
                     {plan.badge}
                   </span>
                 )}
 
-                <h3 className={`relative font-display text-2xl font-black uppercase ${plan.badge ? "mt-3" : "mt-6"}`}>
+                <h3 className={`relative font-display text-xl font-black uppercase ${plan.badge ? "mt-2.5" : "mt-5"}`}>
                   {plan.name}
                 </h3>
 
-                <div className="relative mt-3 flex items-baseline gap-2">
-                  <span className="font-display text-4xl font-black sm:text-5xl">
+                <div className="relative mt-2 flex items-baseline gap-2">
+                  <span className="font-display text-3xl font-black sm:text-4xl">
                     {plan.price}
                   </span>
                   <span className={`text-sm ${s.muted}`}>сомони / месяц</span>
@@ -216,7 +216,7 @@ export default function Pricing() {
                   {plan.tagline}
                 </p>
 
-                <ul className="relative mt-6 flex-1 space-y-2.5">
+                <ul className="relative mt-5 flex-1 space-y-2">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-2.5 text-sm">
                       <Check size={18} className={`mt-0.5 shrink-0 ${s.check}`} />
@@ -225,14 +225,14 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <p className={`relative mt-6 rounded-2xl px-4 py-3 text-xs leading-relaxed ${s.resultBox}`}>
+                <p className={`relative mt-5 rounded-xl px-3.5 py-2.5 text-xs leading-relaxed ${s.resultBox}`}>
                   <span className="font-semibold text-white">Результат: </span>
                   {plan.result}
                 </p>
 
                 <button
                   onClick={() => openModal(plan.name)}
-                  className={`relative mt-6 flex items-center justify-center gap-2 ${s.button}`}
+                  className={`relative mt-5 flex items-center justify-center gap-2 !px-5 !py-3 ${s.button}`}
                 >
                   Выбрать тариф
                   <ArrowRight size={16} />
@@ -242,7 +242,7 @@ export default function Pricing() {
           })}
         </div>
 
-        <div className="mt-10 flex justify-center">
+        <div className="mt-8 flex justify-center">
           <span className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold text-white/70">
             <CreditCard size={14} className="text-lime-500" />
             Старт работы — после предоплаты
