@@ -267,6 +267,16 @@ section{position:relative;padding:88px 0;z-index:2}
 .case h3{font-size:16px;text-transform:none;letter-spacing:0;font-weight:700;font-family:'Manrope',sans-serif;margin-top:10px;line-height:1.5}
 .case .metric{margin-top:26px;font-family:'Unbounded',sans-serif;font-weight:900;font-size:40px;color:var(--lime)}
 .case .metric-label{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3);margin-top:2px}
+.ba{position:relative;aspect-ratio:4/3;overflow:hidden;background:#000;margin:-28px -28px 20px;border-radius:20px 20px 0 0}
+.ba-after,.ba-before{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;pointer-events:none}
+.ba-before-wrap{position:static;overflow:hidden;width:50%;height:100%}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--lime);box-shadow:0 0 10px rgba(184,255,60,.8);pointer-events:none}
+.ba-tag{position:absolute;top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:4px;pointer-events:none}
+.ba-tag-before{left:10px}
+.ba-tag-after{right:10px}
+.ba-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
+.case-video{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--lime)}
+.case-video:hover{text-decoration:underline}
 
 /* ---------- pricing ---------- */
 .pricing-grid{display:grid;gap:18px;margin-top:48px;grid-template-columns:1fr}
@@ -525,25 +535,7 @@ footer .copy{font-size:12px;color:var(--fg3)}
           <span class="eyebrow reveal"><span class="reveal-inner">Кейсы</span></span>
           <h2 class="h2 reveal"><span class="reveal-inner">Результаты, а не обещания</span></h2>
         </div>
-        <div class="cases-grid">
-          <div class="case rise">
-            <span class="niche">Beauty-бренд</span>
-            <h3>Рост охватов с нуля до 2.1M за 3 месяца</h3>
-            <div class="metric"><span class="counter" data-target="340" data-prefix="+" data-suffix="%">0</span></div>
-            <div class="metric-label">охваты</div>
-          </div>
-          <div class="case rise" style="transition-delay:.1s">
-            <span class="niche">Ресторан</span>
-            <h3>Поток заявок через reels и автоворонку в Telegram</h3>
-            <div class="metric"><span class="counter" data-target="91" data-prefix="+">0</span></div>
-            <div class="metric-label">заявок/мес</div>
-          </div>
-          <div class="case rise" style="transition-delay:.2s">
-            <span class="niche">Личный бренд</span>
-            <h3>Из микроблога в узнаваемого эксперта ниши</h3>
-            <div class="metric"><span class="counter" data-target="18" data-prefix="+" data-suffix="K">0</span></div>
-            <div class="metric-label">подписчиков</div>
-          </div>
+        <div class="cases-grid" id="cases-grid">
         </div>
       </div>
     </section>
@@ -715,7 +707,7 @@ footer .copy{font-size:12px;color:var(--fg3)}
 </div>
 
 <script>
-(function(){
+(async function(){
 "use strict";
 
 var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -725,6 +717,69 @@ if (REDUCE) html.classList.add('reduced');
 /* ---------------- footer year ---------------- */
 var copyEl = document.getElementById('copyright');
 if (copyEl) copyEl.textContent = '© ' + new Date().getFullYear() + ' TRIOCRASH. Все права защищены.';
+
+/* ---------------- cases (loaded from data/cases.json, edited via admin.html) ---------------- */
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function renderCaseCard(c, i) {
+  var delay = ((i % 3) * 0.1).toFixed(1);
+  var metricAttrs = 'data-target="' + (c.metricTarget != null ? c.metricTarget : 0) + '"';
+  if (c.metricPrefix) metricAttrs += ' data-prefix="' + escapeHtml(c.metricPrefix) + '"';
+  if (c.metricSuffix) metricAttrs += ' data-suffix="' + escapeHtml(c.metricSuffix) + '"';
+  if (c.metricDecimals) metricAttrs += ' data-decimals="' + c.metricDecimals + '"';
+
+  var media = '';
+  if (c.beforeImage && c.afterImage) {
+    media =
+      '<div class="ba">' +
+        '<img class="ba-after" src="' + escapeHtml(c.afterImage) + '" alt="После" loading="lazy">' +
+        '<div class="ba-before-wrap"><img class="ba-before" src="' + escapeHtml(c.beforeImage) + '" alt="До" loading="lazy"></div>' +
+        '<div class="ba-divider"></div>' +
+        '<span class="ba-tag ba-tag-before">До</span><span class="ba-tag ba-tag-after">После</span>' +
+        '<input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Сравнить до и после">' +
+      '</div>';
+  }
+
+  var video = c.youtubeUrl
+    ? '<a class="case-video" href="' + escapeHtml(c.youtubeUrl) + '" target="_blank" rel="noopener">Смотреть видео<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></a>'
+    : '';
+
+  return (
+    '<div class="case rise" style="transition-delay:' + delay + 's">' +
+      media +
+      '<span class="niche">' + escapeHtml(c.niche) + '</span>' +
+      '<h3>' + escapeHtml(c.title) + '</h3>' +
+      video +
+      '<div class="metric"><span class="counter" ' + metricAttrs + '>0</span></div>' +
+      '<div class="metric-label">' + escapeHtml(c.metricLabel) + '</div>' +
+    '</div>'
+  );
+}
+
+async function renderCases() {
+  var grid = document.getElementById('cases-grid');
+  if (!grid) return;
+  try {
+    var res = await fetch('data/cases.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('status ' + res.status);
+    var items = await res.json();
+    grid.innerHTML = items.map(renderCaseCard).join('');
+    grid.addEventListener('input', function (e) {
+      if (!e.target.classList.contains('ba-range')) return;
+      var wrap = e.target.closest('.ba');
+      wrap.querySelector('.ba-before-wrap').style.width = e.target.value + '%';
+      wrap.querySelector('.ba-divider').style.left = e.target.value + '%';
+    });
+  } catch (err) {
+    console.warn('Не удалось загрузить кейсы из data/cases.json:', err);
+  }
+}
+
+await renderCases();
 
 /* ---------------- letter / word split ---------------- */
 function splitNode(node, counter) {

@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TRIOCRASH — Админка кейсов</title>
+<link rel="icon" href="favicon.png">
+<style>
+:root{
+  --bg:#0a0a0a;--bg2:#121212;--fg:rgba(255,255,255,.92);--fg2:rgba(255,255,255,.6);--fg3:rgba(255,255,255,.4);
+  --lime:#b8ff3c;--lime2:#d4ff6e;--magenta:#ff2ec4;--line:rgba(255,255,255,.12);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;padding:24px 16px 80px}
+h1,h2,h3{font-weight:700;letter-spacing:-0.01em;margin:0}
+.wrap{max-width:900px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.topbar h1{font-size:20px}
+.topbar a{color:var(--fg2);font-size:13px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:7px 14px}
+.topbar a:hover{color:var(--fg);border-color:rgba(255,255,255,.3)}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:20px}
+.card h2{font-size:16px;margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:600;color:var(--fg3);text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px}
+label:first-child{margin-top:0}
+input[type=text],input[type=password],input[type=number],input[type=url],textarea{
+  width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  color:var(--fg);font:inherit;font-size:14px;outline:none;
+}
+input:focus,textarea:focus{border-color:var(--lime)}
+textarea{resize:vertical;min-height:70px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row > div{flex:1;min-width:140px}
+.hint{font-size:12px;color:var(--fg3);margin-top:6px;line-height:1.5}
+.hint a{color:var(--lime)}
+button{font:inherit;cursor:pointer;border:0;border-radius:9px;padding:11px 20px;font-weight:700;font-size:14px}
+.btn-lime{background:var(--lime);color:#0a0a0a}
+.btn-lime:hover{background:var(--lime2)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35)}
+.btn-danger{background:rgba(255,70,70,.15);color:#ff7a7a}
+.btn-danger:hover{background:rgba(255,70,70,.25)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.status{font-size:13px;margin-top:14px;padding:10px 12px;border-radius:9px;display:none}
+.status.show{display:block}
+.status.ok{background:rgba(184,255,60,.12);color:var(--lime)}
+.status.err{background:rgba(255,46,196,.12);color:#ff7fd8}
+.status.busy{background:rgba(255,255,255,.08);color:var(--fg2)}
+#gate{max-width:480px;margin:60px auto}
+#app{display:none}
+#app.show{display:block}
+#gate.hide{display:none}
+.case-item{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.case-item:first-child{border-top:0}
+.case-item .thumbs{display:flex;gap:4px;flex:none}
+.case-item .thumbs img{width:44px;height:44px;object-fit:cover;border-radius:6px;background:#000}
+.case-item .thumbs .ph{width:44px;height:44px;border-radius:6px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;color:var(--fg3);font-size:10px;text-align:center}
+.case-item .info{flex:1;min-width:0}
+.case-item .info .n{font-size:11px;color:var(--fg3);text-transform:uppercase}
+.case-item .info .t{font-size:14px;font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.case-item .info .m{font-size:12px;color:var(--lime);margin-top:2px}
+.case-item .btns{display:flex;gap:8px;flex:none;align-self:center}
+.case-item .btns button{padding:7px 12px;font-size:12px}
+.preview-row{display:flex;gap:14px;margin-top:8px}
+.preview-row .ph{flex:1;aspect-ratio:4/3;border-radius:10px;background:rgba(255,255,255,.04);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.preview-row img{width:100%;height:100%;object-fit:cover}
+.preview-row .ph span{font-size:12px;color:var(--fg3)}
+.empty{color:var(--fg3);font-size:13px;padding:10px 0}
+.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--fg2)}
+.checkbox-row input{width:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <h1>TRIOCRASH — кейсы</h1>
+    <a href="index.html" target="_blank">Открыть сайт ↗</a>
+  </div>
+
+  <div id="gate" class="card">
+    <h2>Вход через GitHub-токен</h2>
+    <p class="hint">
+      Создай Fine-grained Personal Access Token на
+      <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens</a>,
+      выбери доступ только к репозиторию <b>alamovtjk/smm-agency-landing</b>, права
+      <b>Contents: Read and write</b>. Токен хранится только в твоём браузере — никуда, кроме GitHub API, не отправляется.
+    </p>
+    <label for="token-input">Токен</label>
+    <input type="password" id="token-input" placeholder="github_pat_...">
+    <div class="checkbox-row">
+      <input type="checkbox" id="remember-token" checked>
+      <label for="remember-token" style="margin:0;text-transform:none;font-weight:400;color:var(--fg2)">Запомнить в этом браузере</label>
+    </div>
+    <div class="actions">
+      <button class="btn-lime" id="connect-btn">Войти</button>
+    </div>
+    <div class="status" id="gate-status"></div>
+  </div>
+
+  <div id="app">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <h2 style="margin:0">Кейсы на сайте</h2>
+        <button class="btn-ghost" id="logout-btn">Выйти</button>
+      </div>
+      <div id="cases-list"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="form-title">Новый кейс</h2>
+      <label for="f-niche">Ниша / категория</label>
+      <input type="text" id="f-niche" placeholder="Например: Beauty-бренд">
+      <label for="f-title">Заголовок кейса</label>
+      <textarea id="f-title" placeholder="Например: Рост охватов с нуля до 2.1M за 3 месяца"></textarea>
+
+      <div class="row">
+        <div>
+          <label for="f-metric-prefix">Знак перед числом</label>
+          <input type="text" id="f-metric-prefix" placeholder="+" value="+">
+        </div>
+        <div>
+          <label for="f-metric-target">Число</label>
+          <input type="number" id="f-metric-target" placeholder="340">
+        </div>
+        <div>
+          <label for="f-metric-suffix">Знак после числа</label>
+          <input type="text" id="f-metric-suffix" placeholder="%">
+        </div>
+      </div>
+      <label for="f-metric-label">Подпись под цифрой</label>
+      <input type="text" id="f-metric-label" placeholder="Например: охваты">
+
+      <label>Фото «До» / «После» (необязательно)</label>
+      <div class="row">
+        <div>
+          <input type="file" id="f-before" accept="image/*">
+        </div>
+        <div>
+          <input type="file" id="f-after" accept="image/*">
+        </div>
+      </div>
+      <div class="preview-row">
+        <div class="ph" id="before-preview"><span>До</span></div>
+        <div class="ph" id="after-preview"><span>После</span></div>
+      </div>
+
+      <label for="f-youtube">Ссылка на видео (YouTube)</label>
+      <input type="url" id="f-youtube" placeholder="https://youtube.com/watch?v=...">
+
+      <div class="actions">
+        <button class="btn-lime" id="save-btn">Сохранить</button>
+        <button class="btn-ghost" id="cancel-edit-btn" style="display:none">Отменить редактирование</button>
+      </div>
+      <div class="status" id="form-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var REPO_OWNER = 'alamovtjk';
+var REPO_NAME = 'smm-agency-landing';
+var BRANCH = 'master';
+var API = 'https://api.github.com';
+var REPO_PREFIX = 'site/';
+var STORAGE_KEY = 'triocrash_admin_token';
+
+var state = { token: '', cases: [], casesSha: null, editingId: null, beforeB64: null, afterB64: null };
+
+var $ = function (id) { return document.getElementById(id); };
+
+function setStatus(el, type, text) {
+  el.className = 'status show ' + type;
+  el.textContent = text;
+}
+function clearStatus(el) {
+  el.className = 'status';
+  el.textContent = '';
+}
+
+/* ---------------- base64 / utf8 ---------------- */
+function utf8ToBase64(str) {
+  var bytes = new TextEncoder().encode(str);
+  var binary = '';
+  bytes.forEach(function (b) { binary += String.fromCharCode(b); });
+  return btoa(binary);
+}
+function base64ToUtf8(b64) {
+  var binary = atob(b64.replace(/\n/g, ''));
+  var bytes = new Uint8Array(binary.length);
+  for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+/* ---------------- image resize ---------------- */
+function resizeImageToBase64(file, maxDim, quality) {
+  return new Promise(function (resolve, reject) {
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () {
+      var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      var cw = Math.max(1, Math.round(img.width * scale));
+      var ch = Math.max(1, Math.round(img.height * scale));
+      var canvas = document.createElement('canvas');
+      canvas.width = cw; canvas.height = ch;
+      canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality || 0.82).split(',')[1]);
+    };
+    img.onerror = function (e) { URL.revokeObjectURL(url); reject(e); };
+    img.src = url;
+  });
+}
+
+/* ---------------- GitHub API ---------------- */
+function ghHeaders() {
+  return {
+    'Authorization': 'Bearer ' + state.token,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+async function ghGetFile(path) {
+  var res = await fetch(API + '/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path + '?ref=' + BRANCH + '&t=' + Date.now(), { headers: ghHeaders() });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error('GitHub ' + res.status + ': ' + (await res.text()));
+  return res.json();
+}
+async function ghPutFile(path, base64Content, sha, message) {
+  var body = { message: message, content: base64Content, branch: BRANCH };
+  if (sha) body.sha = sha;
+  var res = await fetch(API + '/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path, {
+    method: 'PUT',
+    headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()),
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error('GitHub ' + res.status + ': ' + (await res.text()));
+  return res.json();
+}
+
+async function loadCases() {
+  var file = await ghGetFile(REPO_PREFIX + 'data/cases.json');
+  state.cases = file ? JSON.parse(base64ToUtf8(file.content)) : [];
+  state.casesSha = file ? file.sha : null;
+}
+async function saveCases(message) {
+  var content = utf8ToBase64(JSON.stringify(state.cases, null, 2));
+  var result = await ghPutFile(REPO_PREFIX + 'data/cases.json', content, state.casesSha, message);
+  state.casesSha = result.content.sha;
+}
+async function uploadImage(base64, ext, label) {
+  var path = REPO_PREFIX + 'uploads/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + label + '.' + ext;
+  await ghPutFile(path, base64, null, 'Добавить изображение: ' + label);
+  return path.slice(REPO_PREFIX.length);
+}
+
+/* ---------------- UI: case list ---------------- */
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function renderList() {
+  var list = $('cases-list');
+  if (!state.cases.length) {
+    list.innerHTML = '<p class="empty">Кейсов пока нет — добавь первый ниже.</p>';
+    return;
+  }
+  list.innerHTML = state.cases.map(function (c, i) {
+    var thumbs = '';
+    if (c.beforeImage) thumbs += '<img src="' + escapeHtml(c.beforeImage) + '" alt="до">'; else thumbs += '<div class="ph">до</div>';
+    if (c.afterImage) thumbs += '<img src="' + escapeHtml(c.afterImage) + '" alt="после">'; else thumbs += '<div class="ph">после</div>';
+    var metric = (c.metricPrefix || '') + (c.metricTarget != null ? c.metricTarget : '') + (c.metricSuffix || '');
+    return (
+      '<div class="case-item" data-id="' + escapeHtml(c.id) + '">' +
+        '<div class="thumbs">' + thumbs + '</div>' +
+        '<div class="info">' +
+          '<div class="n">' + escapeHtml(c.niche) + '</div>' +
+          '<div class="t">' + escapeHtml(c.title) + '</div>' +
+          '<div class="m">' + escapeHtml(metric) + ' ' + escapeHtml(c.metricLabel) + '</div>' +
+        '</div>' +
+        '<div class="btns">' +
+          (i > 0 ? '<button class="btn-ghost" data-action="up">↑</button>' : '') +
+          (i < state.cases.length - 1 ? '<button class="btn-ghost" data-action="down">↓</button>' : '') +
+          '<button class="btn-ghost" data-action="edit">Править</button>' +
+          '<button class="btn-danger" data-action="delete">Удалить</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+$('cases-list').addEventListener('click', async function (e) {
+  var btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  var item = btn.closest('.case-item');
+  var id = item.dataset.id;
+  var idx = state.cases.findIndex(function (c) { return c.id === id; });
+  if (idx === -1) return;
+  var action = btn.dataset.action;
+
+  if (action === 'edit') {
+    startEdit(state.cases[idx]);
+    return;
+  }
+  if (action === 'up' || action === 'down') {
+    var swapWith = action === 'up' ? idx - 1 : idx + 1;
+    var tmp = state.cases[idx];
+    state.cases[idx] = state.cases[swapWith];
+    state.cases[swapWith] = tmp;
+    renderList();
+    try {
+      await saveCases('Изменить порядок кейсов');
+    } catch (err) {
+      alert('Не удалось сохранить порядок: ' + err.message);
+      await loadCases();
+      renderList();
+    }
+    return;
+  }
+  if (action === 'delete') {
+    if (!confirm('Удалить кейс «' + state.cases[idx].title + '»? Загруженные фото останутся в репозитории.')) return;
+    var removed = state.cases.splice(idx, 1)[0];
+    renderList();
+    try {
+      await saveCases('Удалить кейс: ' + removed.title);
+    } catch (err) {
+      alert('Не удалось удалить: ' + err.message);
+      await loadCases();
+      renderList();
+    }
+  }
+});
+
+/* ---------------- form ---------------- */
+function resetForm() {
+  state.editingId = null;
+  state.beforeB64 = null;
+  state.afterB64 = null;
+  $('form-title').textContent = 'Новый кейс';
+  $('f-niche').value = '';
+  $('f-title').value = '';
+  $('f-metric-prefix').value = '+';
+  $('f-metric-target').value = '';
+  $('f-metric-suffix').value = '';
+  $('f-metric-label').value = '';
+  $('f-before').value = '';
+  $('f-after').value = '';
+  $('f-youtube').value = '';
+  $('before-preview').innerHTML = '<span>До</span>';
+  $('after-preview').innerHTML = '<span>После</span>';
+  $('cancel-edit-btn').style.display = 'none';
+  clearStatus($('form-status'));
+}
+
+function startEdit(c) {
+  state.editingId = c.id;
+  state.beforeB64 = null;
+  state.afterB64 = null;
+  $('form-title').textContent = 'Редактирование кейса';
+  $('f-niche').value = c.niche || '';
+  $('f-title').value = c.title || '';
+  $('f-metric-prefix').value = c.metricPrefix || '';
+  $('f-metric-target').value = c.metricTarget != null ? c.metricTarget : '';
+  $('f-metric-suffix').value = c.metricSuffix || '';
+  $('f-metric-label').value = c.metricLabel || '';
+  $('f-before').value = '';
+  $('f-after').value = '';
+  $('f-youtube').value = c.youtubeUrl || '';
+  $('before-preview').innerHTML = c.beforeImage ? '<img src="' + escapeHtml(c.beforeImage) + '">' : '<span>До</span>';
+  $('after-preview').innerHTML = c.afterImage ? '<img src="' + escapeHtml(c.afterImage) + '">' : '<span>После</span>';
+  $('cancel-edit-btn').style.display = '';
+  clearStatus($('form-status'));
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
+}
+
+$('cancel-edit-btn').addEventListener('click', resetForm);
+
+$('f-before').addEventListener('change', async function (e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  state.beforeB64 = await resizeImageToBase64(file, 1600, 0.82);
+  $('before-preview').innerHTML = '<img src="data:image/jpeg;base64,' + state.beforeB64 + '">';
+});
+$('f-after').addEventListener('change', async function (e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  state.afterB64 = await resizeImageToBase64(file, 1600, 0.82);
+  $('after-preview').innerHTML = '<img src="data:image/jpeg;base64,' + state.afterB64 + '">';
+});
+
+$('save-btn').addEventListener('click', async function () {
+  var statusEl = $('form-status');
+  var niche = $('f-niche').value.trim();
+  var title = $('f-title').value.trim();
+  var metricTarget = $('f-metric-target').value.trim();
+  var metricLabel = $('f-metric-label').value.trim();
+
+  if (!niche || !title || metricTarget === '' || !metricLabel) {
+    setStatus(statusEl, 'err', 'Заполни нишу, заголовок, число и подпись под цифрой.');
+    return;
+  }
+
+  $('save-btn').disabled = true;
+  setStatus(statusEl, 'busy', 'Сохраняю…');
+
+  try {
+    var entry = state.editingId
+      ? state.cases.find(function (c) { return c.id === state.editingId; })
+      : { id: 'case-' + Date.now().toString(36) };
+
+    entry.niche = niche;
+    entry.title = title;
+    entry.metricTarget = Number(metricTarget);
+    entry.metricPrefix = $('f-metric-prefix').value.trim();
+    entry.metricSuffix = $('f-metric-suffix').value.trim();
+    entry.metricLabel = metricLabel;
+    entry.youtubeUrl = $('f-youtube').value.trim();
+    entry.beforeImage = entry.beforeImage || '';
+    entry.afterImage = entry.afterImage || '';
+
+    if (state.beforeB64) {
+      setStatus(statusEl, 'busy', 'Загружаю фото «до»…');
+      entry.beforeImage = await uploadImage(state.beforeB64, 'jpg', 'before');
+    }
+    if (state.afterB64) {
+      setStatus(statusEl, 'busy', 'Загружаю фото «после»…');
+      entry.afterImage = await uploadImage(state.afterB64, 'jpg', 'after');
+    }
+
+    if (!state.editingId) state.cases.push(entry);
+
+    setStatus(statusEl, 'busy', 'Обновляю список кейсов на сайте…');
+    await saveCases((state.editingId ? 'Обновить кейс: ' : 'Добавить кейс: ') + title);
+
+    setStatus(statusEl, 'ok', 'Сохранено. Сайт обновится за 10–20 секунд (идёт автодеплой).');
+    resetForm();
+    renderList();
+  } catch (err) {
+    setStatus(statusEl, 'err', 'Ошибка: ' + err.message);
+  } finally {
+    $('save-btn').disabled = false;
+  }
+});
+
+/* ---------------- auth gate ---------------- */
+async function tryConnect(token) {
+  var gateStatus = $('gate-status');
+  setStatus(gateStatus, 'busy', 'Проверяю токен…');
+  state.token = token;
+  try {
+    var res = await fetch(API + '/repos/' + REPO_OWNER + '/' + REPO_NAME, { headers: ghHeaders() });
+    if (!res.ok) throw new Error('Токен не подходит или нет доступа к репозиторию (' + res.status + ').');
+    await loadCases();
+    renderList();
+    $('gate').classList.add('hide');
+    $('app').classList.add('show');
+  } catch (err) {
+    setStatus(gateStatus, 'err', err.message);
+    state.token = '';
+  }
+}
+
+$('connect-btn').addEventListener('click', function () {
+  var token = $('token-input').value.trim();
+  if (!token) { setStatus($('gate-status'), 'err', 'Вставь токен.'); return; }
+  if ($('remember-token').checked) localStorage.setItem(STORAGE_KEY, token);
+  else localStorage.removeItem(STORAGE_KEY);
+  tryConnect(token);
+});
+
+$('logout-btn').addEventListener('click', function () {
+  localStorage.removeItem(STORAGE_KEY);
+  state.token = '';
+  $('app').classList.remove('show');
+  $('gate').classList.remove('hide');
+  $('token-input').value = '';
+});
+
+var saved = localStorage.getItem(STORAGE_KEY);
+if (saved) {
+  $('token-input').value = saved;
+  tryConnect(saved);
+}
+
+})();
+</script>
+</body>
+</html>
